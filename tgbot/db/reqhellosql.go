@@ -9,30 +9,30 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// AboutBot отдает случайное слово из бд 
-func AboutBot() string {
+// HelloWords отдает случайное слово из таблицы hellowords
+func HelloWords() string {
 	db, err := sql.Open("mysql", "root:A7bje8971@@/tgbotwords")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	rows, err := db.Query("select * from tgbotwords.aboutbot")
+	rows, err := db.Query("select * from tgbotwords.hellowords")
 	if err != nil {
 		panic(err)
 	}
 	defer rows.Close()
 
-	aboutbot := []WordsDB{}
+	helloWorlds := []WordsDB{}
 
 	for rows.Next() {
-		a := WordsDB{}
-		err := rows.Scan(&a.id, &a.text)
+		h := WordsDB{}
+		err := rows.Scan(&h.id, &h.text)
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
-		aboutbot = append(aboutbot, a)
+		helloWorlds = append(helloWorlds, h)
 	}
-	return rangeDB(aboutbot)
+	return randWords(helloWorlds)
 }

@@ -5,18 +5,9 @@ import (
 	"time"
 )
 
-// return text about bot
-func rangeDB(words []WordsDB) string {
-	var slice = make([]WordsDB, 0)
-	for _, valueMap := range words {
-		slice = append(slice, valueMap)
-	}
-
-	return randWords(slice)
-}
-
+// Принимает на вход слайс заполненый из БД и возвращает рандомное слово из этого слайса
 func randWords(words []WordsDB) string {
 	rand.Seed(time.Now().UnixNano())
-	var word = words[rand.Intn(len(words))]
-	return word.text
+	var result = words[rand.Intn(len(words))]
+	return result.text
 }
