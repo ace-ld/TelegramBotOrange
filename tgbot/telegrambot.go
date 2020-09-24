@@ -6,6 +6,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
 	getInfoCovid "ace-h/tgbot/api/covidSummaryAPI"
+	getJoke "ace-h/tgbot/api/jokesAPI"
 	db "ace-h/tgbot/db"
 )
 
@@ -54,6 +55,8 @@ func tgbot() {
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.AboutBot())
 		case "Расскажи что-нибудь", "расскажи что-нибудь", "Расскажи что нибудь", "расскажи что нибудь", "Расскажи чтонибудь", "расскажи чтонибудь":
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.HistoryWords())
+		case "Хочу шутку", "хочу шутку":
+			message = tgbotapi.NewMessage(update.Message.Chat.ID, getJoke.GetJoke())
 		case "Total Death COVID-19":
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Всего смертей: "+getInfoCovid.TotalDeath())
 		case "Total Confirmed COVID-19":
