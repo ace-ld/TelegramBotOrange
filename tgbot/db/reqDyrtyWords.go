@@ -9,7 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// DirtyWords отдает случайное слово из таблицы dirtywords
+// DirtyWords возвращает случайное слово из таблицы dirtywords
 func DirtyWords() string {
 	db, err := sql.Open("mysql", "root:A7bje8971@@/tgbotwords")
 	if err != nil {

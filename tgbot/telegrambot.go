@@ -55,6 +55,7 @@ func tgbot() {
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.AboutBot())
 		case "Расскажи что-нибудь", "расскажи что-нибудь", "Расскажи что нибудь", "расскажи что нибудь", "Расскажи чтонибудь", "расскажи чтонибудь":
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.HistoryWords())
+
 		case "Хочу шутку", "хочу шутку":
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, getJoke.GetJoke())
 

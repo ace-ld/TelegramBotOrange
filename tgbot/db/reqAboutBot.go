@@ -9,7 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// AboutBot отдает случайное слово из таблицы aboutbot
+// AboutBot возвращает случайное слово из таблицы aboutbot
 func AboutBot() string {
 	db, err := sql.Open("mysql", "root:A7bje8971@@/tgbotwords")
 	if err != nil {

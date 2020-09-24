@@ -9,7 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// HelloWords отдает случайное слово из таблицы hellowords
+// HelloWords возвращает случайное слово из таблицы hellowords
 func HelloWords() string {
 	db, err := sql.Open("mysql", "root:A7bje8971@@/tgbotwords")
 	if err != nil {
