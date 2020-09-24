@@ -18,7 +18,8 @@ type JokeResponse struct {
 	Value Joke   `json:"value"`
 }
 
-func getJoke() string {
+// GetJoke отдает шутку про Чака
+func GetJoke() string {
 	c := http.Client{}
 	resp, err := c.Get("http://api.icndb.com/jokes/random?limitTo=[nerdy]")
 	if err != nil {

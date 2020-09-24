@@ -1,6 +1,6 @@
 package db
 
-// WordsDB струкрута БД tgbotwords.sql
+// WordsDB структура для БД
 type WordsDB struct {
 	id   int
 	text string
