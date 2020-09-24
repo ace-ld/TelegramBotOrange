@@ -9,12 +9,14 @@ import (
 	db "ace-h/tgbot/db"
 )
 
-var buttonTD = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "Total Death COVID-19"}}
-var buttonTC = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "Total Confirmed COVID-19"}}
-var buttonNC = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "New confirmed COVID-19"}}
-var buttonND = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "New Deaths COVID-19"}}
-var buttonNR = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "New recovered COVID-19"}}
-var buttonTR = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "Total recovered COVID-19"}}
+var (
+	buttonTD = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "Total Death COVID-19"}}
+	buttonTC = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "Total Confirmed COVID-19"}}
+	buttonNC = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "New confirmed COVID-19"}}
+	buttonND = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "New Deaths COVID-19"}}
+	buttonNR = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "New recovered COVID-19"}}
+	buttonTR = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "Total recovered COVID-19"}}
+)
 
 func main() {
 	tgbot()
