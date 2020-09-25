@@ -39,7 +39,10 @@ func tgbot() {
 	updates, err := bot.GetUpdatesChan(u)
 
 	for update := range updates {
+
 		var message tgbotapi.MessageConfig
+		var msgStiker tgbotapi.StickerConfig
+
 		log.Println("received text: ", update.Message.Text) // логируем сообщения
 
 		if update.Message == nil { // ignore any non-Message Updates
@@ -58,6 +61,14 @@ func tgbot() {
 
 		case "Хочу шутку", "хочу шутку":
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, getJoke.GetJoke())
+
+		// удалить это потом )))))
+		case "Че скажешь про Олега?", "че скажешь про Олега?", "Че скажешь про олега?", "че скажешь про олега?":
+			message = tgbotapi.NewMessage(update.Message.Chat.ID, `Олег, ПИДАРАСИНА!!!`)
+			msgStiker = tgbotapi.NewStickerShare(update.Message.Chat.ID, "CAACAgIAAxkBAAEBXtNfbgt80HJdbDieU1AVviHdclYsUgACDwADmdO5FKWRdsV2kQujGwQ")
+		case "Рома?":
+			message = tgbotapi.NewMessage(update.Message.Chat.ID, `РОООООООООООООООООМААААААА`)
+			msgStiker = tgbotapi.NewStickerShare(update.Message.Chat.ID, "CAACAgIAAxkBAAEBXtNfbgt80HJdbDieU1AVviHdclYsUgACDwADmdO5FKWRdsV2kQujGwQ")
 
 		case "Total Death COVID-19":
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Всего смертей в мире: "+getInfoCovid.TotalDeath())
@@ -80,5 +91,6 @@ func tgbot() {
 		message.ReplyMarkup = tgbotapi.NewReplyKeyboard(buttonTD, buttonTC, buttonTR, buttonND, buttonNC, buttonNR)
 
 		bot.Send(message)
+		bot.Send(msgStiker)
 	}
 }
