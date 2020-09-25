@@ -19,15 +19,16 @@ var (
 	buttonTR = []tgbotapi.KeyboardButton{tgbotapi.KeyboardButton{Text: "Total recovered COVID-19"}}
 )
 
-func main() {
-	tgbot()
+func check(e error) {
+	if e != nil {
+		log.Panic(e)
+	}
 }
 
-func tgbot() {
+func main() {
+
 	bot, err := tgbotapi.NewBotAPI("813814117:AAEy5T8hws-wU86USfOQOcHQ_kOZFu8-x68")
-	if err != nil {
-		log.Panic(err)
-	}
+	check(err)
 
 	bot.Debug = true
 
@@ -40,8 +41,14 @@ func tgbot() {
 
 	for update := range updates {
 
-		var message tgbotapi.MessageConfig
-		var msgStiker tgbotapi.StickerConfig
+		var (
+			message   tgbotapi.MessageConfig
+			msgStiker tgbotapi.StickerConfig
+			msgPhoto  tgbotapi.PhotoConfig
+
+			chatID = update.Message.Chat.ID
+			text   = update.Message.Text
+		)
 
 		log.Println("received text: ", update.Message.Text) // логируем сообщения
 
@@ -49,48 +56,53 @@ func tgbot() {
 			continue
 		}
 
-		switch update.Message.Text {
+		switch text {
+
+		// DATABASE
 		case "Hello", "hello", "Привет", "привет":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.HelloWords())
+			message = tgbotapi.NewMessage(chatID, get.HelloWords())
 		case "Иди нахуй", "иди нахуй", "Иди на хуй", "иди на хуй", "Пидарас", "пидарас":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.DirtyWords())
+			message = tgbotapi.NewMessage(chatID, get.DirtyWords())
 		case "Расскажи о себе", "расскажи о себе":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.AboutBot())
+			message = tgbotapi.NewMessage(chatID, get.AboutBot())
 		case "Расскажи что-нибудь", "расскажи что-нибудь", "Расскажи что нибудь", "расскажи что нибудь", "Расскажи чтонибудь", "расскажи чтонибудь":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.HistoryWords())
+			message = tgbotapi.NewMessage(chatID, get.HistoryWords())
+		// DATABASE
 
+		// OTHER
+		case "Бусинка", "бусинка", "Буся", "буся":
+			f := "C:/Users/gl_ni/go/src/ace-h/tgbot/pics/busya.jpg"
+			message = tgbotapi.NewMessage(chatID, `ЛЯ КАКАЯ`)
+			msgPhoto = tgbotapi.NewPhotoUpload(chatID, f)
+		// OTHER
+
+		// REST API
 		case "Хочу шутку", "хочу шутку":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, getJoke.GetJoke())
-
-		// удалить это потом )))))
-		case "Че скажешь про Олега?", "че скажешь про Олега?", "Че скажешь про олега?", "че скажешь про олега?":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, `Олег, ПИДАРАСИНА!!!`)
-			msgStiker = tgbotapi.NewStickerShare(update.Message.Chat.ID, "CAACAgIAAxkBAAEBXtNfbgt80HJdbDieU1AVviHdclYsUgACDwADmdO5FKWRdsV2kQujGwQ")
-		case "Рома?":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, `РОООООООООООООООООМААААААА`)
-			msgStiker = tgbotapi.NewStickerShare(update.Message.Chat.ID, "CAACAgIAAxkBAAEBXtNfbgt80HJdbDieU1AVviHdclYsUgACDwADmdO5FKWRdsV2kQujGwQ")
-
+			message = tgbotapi.NewMessage(chatID, getJoke.GetJoke())
 		case "Total Death COVID-19":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Всего смертей в мире: "+getInfoCovid.TotalDeath())
+			message = tgbotapi.NewMessage(chatID, "Всего смертей в мире: "+getInfoCovid.TotalDeath())
 		case "Total Confirmed COVID-19":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Всего подтвержденных заражений в мире: "+getInfoCovid.TotalConfirmed())
+			message = tgbotapi.NewMessage(chatID, "Всего подтвержденных заражений в мире: "+getInfoCovid.TotalConfirmed())
 		case "New confirmed COVID-19":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Новых заражений в мире: "+getInfoCovid.NewConfirmed())
+			message = tgbotapi.NewMessage(chatID, "Новых заражений в мире: "+getInfoCovid.NewConfirmed())
 		case "New Deaths COVID-19":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Новых смертей в мире: "+getInfoCovid.NewDeaths())
+			message = tgbotapi.NewMessage(chatID, "Новых смертей в мире: "+getInfoCovid.NewDeaths())
 		case "New recovered COVID-19":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Вылечилось за сутки в мире: "+getInfoCovid.NewRecovered())
+			message = tgbotapi.NewMessage(chatID, "Вылечилось за сутки в мире: "+getInfoCovid.NewRecovered())
 		case "Total recovered COVID-19":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, "Всего вылечилось в мире: "+getInfoCovid.TotalRecovered())
+			message = tgbotapi.NewMessage(chatID, "Всего вылечилось в мире: "+getInfoCovid.TotalRecovered())
+		// REST API
 
 		default:
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, `Я не понимаю что ты хочешь :(`+"\n"+`Напиши @boot_fail`)
+			message = tgbotapi.NewMessage(chatID, `Я не понимаю что ты хочешь :(`+"\n"+`Напиши @boot_fail`)
+			msgStiker = tgbotapi.NewStickerShare(chatID, "CAACAgIAAxkBAAEBXvNfbiYSR9q_YngPLLFUzPOwNHn6DwAC6gUAAtCG-wpnYVb-QhDZaBsE")
 		}
 
-		message.ReplyToMessageID = update.Message.MessageID
+		//message.ReplyToMessageID = update.Message.MessageID
 		message.ReplyMarkup = tgbotapi.NewReplyKeyboard(buttonTD, buttonTC, buttonTR, buttonND, buttonNC, buttonNR)
 
 		bot.Send(message)
 		bot.Send(msgStiker)
+		bot.Send(msgPhoto)
 	}
 }
