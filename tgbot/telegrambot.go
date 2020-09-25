@@ -7,7 +7,7 @@ import (
 
 	getInfoCovid "ace-h/tgbot/api/covidSummaryAPI"
 	getJoke "ace-h/tgbot/api/jokesAPI"
-	db "ace-h/tgbot/db"
+	get "ace-h/tgbot/db"
 )
 
 var (
@@ -40,7 +40,7 @@ func tgbot() {
 
 	for update := range updates {
 		var message tgbotapi.MessageConfig
-		log.Println("received text: ", update.Message.Text)
+		log.Println("received text: ", update.Message.Text) // логируем сообщения
 
 		if update.Message == nil { // ignore any non-Message Updates
 			continue
@@ -48,13 +48,13 @@ func tgbot() {
 
 		switch update.Message.Text {
 		case "Hello", "hello", "Привет", "привет":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.HelloWords())
+			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.HelloWords())
 		case "Иди нахуй", "иди нахуй", "Иди на хуй", "иди на хуй", "Пидарас", "пидарас":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.DirtyWords())
+			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.DirtyWords())
 		case "Расскажи о себе", "расскажи о себе":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.AboutBot())
+			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.AboutBot())
 		case "Расскажи что-нибудь", "расскажи что-нибудь", "Расскажи что нибудь", "расскажи что нибудь", "Расскажи чтонибудь", "расскажи чтонибудь":
-			message = tgbotapi.NewMessage(update.Message.Chat.ID, db.HistoryWords())
+			message = tgbotapi.NewMessage(update.Message.Chat.ID, get.HistoryWords())
 
 		case "Хочу шутку", "хочу шутку":
 			message = tgbotapi.NewMessage(update.Message.Chat.ID, getJoke.GetJoke())
